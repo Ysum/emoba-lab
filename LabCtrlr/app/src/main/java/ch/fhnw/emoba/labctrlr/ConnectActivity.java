@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class ConnectActivity extends AppCompatActivity {
+    TextView statusText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class ConnectActivity extends AppCompatActivity {
 
     public void onConnectionError() {
         //TODO take argument and adjust status message correspondingly
-        TextView statusText = (TextView) findViewById(R.id.textView_status);
+        statusText = (TextView) findViewById(R.id.textView_status);
         statusText.setText("Failed to connect to "+ "[IP]:[Port]");
 
     }

@@ -14,8 +14,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //TODO hide Titlebar
         super.onCreate(savedInstanceState);
-        view=new TouchControlView(this);
+        view = new TouchControlView(this);
         setContentView(view);//R.layout.activity_main);
+
+
     }
 
     @Override
