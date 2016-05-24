@@ -1,11 +1,8 @@
 package ch.fhnw.emoba.labctrlr;
 
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
-import android.view.Surface;
-import android.view.SurfaceView;
 
 public class MainActivity extends AppCompatActivity {
     TouchControlView view;
@@ -25,5 +22,11 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        System.out.println("main touch");
+        return super.onTouchEvent(event);
+
+    }
 }
 
