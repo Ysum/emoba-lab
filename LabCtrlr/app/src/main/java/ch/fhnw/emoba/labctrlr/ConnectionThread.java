@@ -27,7 +27,7 @@ public class ConnectionThread extends HandlerThread {
     private int port;
     private Connector connection;
     private Activity caller;
-    private Position pos = new Position(5,7);
+    private long timer;
 
     private Handler handler;
 
@@ -40,6 +40,7 @@ public class ConnectionThread extends HandlerThread {
         this.ip = ip;
         this.port = port;
         this.caller = caller;
+        this.timer = System.currentTimeMillis();
     }
 
     public void prepareHandler(){
@@ -62,12 +63,15 @@ public class ConnectionThread extends HandlerThread {
                             int x=msg.getData().getInt("x");
                             int y=msg.getData().getInt("y");
                             Log.d("ConnectionThread", x + "/" + y);
-                            OscMessage m=new OscMessage("Lab");
-                            m.add(0);
-                            m.add(x);
-                            m.add(1);
-                            m.add(y);
-                            oscP5.send(m);
+                            if(System.currentTimeMillis() - timer >= 20) {
+                                OscMessage m = new OscMessage("Lab");
+                                m.add(0);
+                                m.add(x);
+                                m.add(1);
+                                m.add(y);
+                                oscP5.send(m);
+                                timer = System.currentTimeMillis();
+                            }
                         }
                         break;
                 }
