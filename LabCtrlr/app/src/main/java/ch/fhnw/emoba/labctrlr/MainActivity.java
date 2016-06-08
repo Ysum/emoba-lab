@@ -1,5 +1,6 @@
 package ch.fhnw.emoba.labctrlr;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +10,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     TouchControlView view;
     ConnectionThread con;
     Handler conHandler;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         //map x and y linear from viewsize to 0-180
         int x_scaled = Math.round(x * 180 / width);
         int y_scaled = Math.round(y * 180 / height);
+        y_scaled=y_scaled>180?180:y_scaled;
 
         Message msg = conHandler.obtainMessage();
         msg.what = 2; //set message code to 1$

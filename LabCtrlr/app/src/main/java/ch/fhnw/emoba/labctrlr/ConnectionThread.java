@@ -59,7 +59,15 @@ public class ConnectionThread extends HandlerThread {
                             Log.d("ConnectionThread","no Connection!");
                         }else{
                             Log.d("ConnectionThread","Message 2 received!");
-                            Log.d("ConnectionThread","x "+msg.getData().getInt("x"));
+                            int x=msg.getData().getInt("x");
+                            int y=msg.getData().getInt("y");
+                            Log.d("ConnectionThread", x + "/" + y);
+                            OscMessage m=new OscMessage("Lab");
+                            m.add(0);
+                            m.add(x);
+                            m.add(1);
+                            m.add(y);
+                            oscP5.send(m);
                         }
                         break;
                 }
