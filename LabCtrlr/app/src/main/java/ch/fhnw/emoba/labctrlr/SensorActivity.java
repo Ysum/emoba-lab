@@ -67,6 +67,12 @@ public class SensorActivity extends Activity
         mSensorManager.unregisterListener(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        con.close();
+    }
+
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 

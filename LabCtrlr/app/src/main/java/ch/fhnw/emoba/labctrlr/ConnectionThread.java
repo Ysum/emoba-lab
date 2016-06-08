@@ -79,6 +79,11 @@ public class ConnectionThread extends HandlerThread {
         };
     }
 
+    public void close(){
+        oscP5.stop();
+        System.out.println("disconnected");
+    }
+
     public String toString(){ //to avoid exception...
         return "ConnectionThread";
     }

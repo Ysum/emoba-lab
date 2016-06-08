@@ -41,6 +41,13 @@ public class MainActivity extends Activity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        con.close();
+        super.onDestroy();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -48,7 +55,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(width==0){
+        if(height==0||width==0){
             height=view.getHeight();
             width=view.getWidth();
         }
