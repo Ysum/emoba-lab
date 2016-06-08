@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import netP5.NetAddress;
@@ -38,19 +39,14 @@ public class ConnectActivity extends AppCompatActivity {
 
     public void onConnectClick(View v) {
 
+        Intent intent;
+        Switch theSwitch=(Switch)findViewById(R.id.theSwitch);
+        if(theSwitch.isChecked()){
+            intent = new Intent(this, SensorActivity.class);
+        }else{
+            intent = new Intent(this, MainActivity.class);
+        }
 
-
-
-        /*
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                con=new ConnectionThread(ip,port);
-            }
-        }).start();
-        */
-
-        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 

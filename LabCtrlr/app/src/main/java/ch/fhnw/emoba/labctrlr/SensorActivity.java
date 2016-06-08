@@ -21,19 +21,17 @@ public class SensorActivity extends Activity
     private ConnectionThread con;
     Handler conHandler;
 
-    private final SensorManager mSensorManager;
-    private final Sensor mAccelerometer;
+    private  SensorManager mSensorManager;
+    private  Sensor mAccelerometer;
 
 
     public SensorActivity() {
-        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
+
     }
 
     protected void onCreate(Bundle savedInstanceState) {
-        //TODO hide Titlebar
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_sensor);
+        setContentView(R.layout.activity_sensor);
 
 
         SharedPreferences settings = getSharedPreferences("lastConnection", 0);
@@ -49,6 +47,13 @@ public class SensorActivity extends Activity
         Message msg = conHandler.obtainMessage(); //get a message
         msg.what = 1; //set message code to 1
         msg.sendToTarget(); // send message to conHandler
+
+
+        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        for(Sensor s:mSensorManager.getSensorList(Sensor.TYPE_ALL)){
+            System.out.println(s.getStringType()+" "+s.getName()+" "+s.getType());
+        };
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
     }
 
@@ -66,7 +71,22 @@ public class SensorActivity extends Activity
     }
 
     public void onSensorChanged(SensorEvent event) {
-        Log.d("Sensor",event.values[0]+"/"+event.values[1]+"/"+event.values[2]);
+
+        int y=(int)event.values[2]*2+90;
+        int x=(int)event.values[1]*2+90;
+        y=y>180?180:(y<0?0:y);
+
+        x=x>180?180:(x<0?0:x);
+
+        Message msg = conHandler.obtainMessage();
+        msg.what = 2; //set message code to 1$
+        Bundle b=new Bundle();
+        b.putInt("x",x);
+        b.putInt("y",y);
+        msg.setData(b);
+
+
+        msg.sendToTarget();
 
     }
 
