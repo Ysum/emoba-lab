@@ -3,7 +3,7 @@ package ch.fhnw.emoba.labctrlr;
 /**
  * Created by dardanbujupaj on 24.05.16.
  */
-public class Position {
+public class Position{
     private int x,y;
 
 

@@ -25,7 +25,7 @@ public class ConnectionThread extends HandlerThread {
     private OscP5 oscP5;
     private String ip;
     private int port;
-    private Thread connection;
+    private Connector connection;
     private Activity caller;
     private Position pos = new Position(5,7);
 
@@ -46,12 +46,22 @@ public class ConnectionThread extends HandlerThread {
         this.handler = new Handler(getLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what == 1){
-                    Log.d("ConnectionThread", "msg.what == 1 called");
-                    if(connection == null) {
-                        connection = new Connector();
-                    }
-                    connection.run();
+                switch(msg.what){
+                    case 1:
+                        Log.d("ConnectionThread", "msg.what == 1 called");
+                        if(connection == null) {
+                            connection = new Connector();
+                        }
+                        connection.run();
+                        break;
+                    case 2:
+                        if(connection == null) {
+                            Log.d("ConnectionThread","no Connection!");
+                        }else{
+                            Log.d("ConnectionThread","Message 2 received!");
+                            Log.d("ConnectionThread","x "+msg.getData().getInt("x"));
+                        }
+                        break;
                 }
             }
         };
@@ -78,10 +88,10 @@ public class ConnectionThread extends HandlerThread {
             NetInfo tmp = oscP5.netInfo();
 
             Log.d("ConnectionThread: ", "wan: "+ tmp.wan() + " lan: " + tmp.lan());
-            while(true) {
+            /*while(true) {
                 sendCoordinates(pos.getX(), pos.getY());
                 Log.d("ConnectionThread: ", "sending pos: " + pos.getX() + " / " + pos.getY());
-            }
+            }*/
             //System.out.println(oscProperties);
             //System.out.println(oscP5);
            // System.out.println(System.currentTimeMillis() - start);
