@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,7 +16,7 @@ import netP5.NetAddress;
 
 public class ConnectActivity extends AppCompatActivity {
     volatile ConnectionThread con;
-    Handler conHandler;
+    public Handler conHandler;
 
 
     TextView statusText;
@@ -37,9 +39,15 @@ public class ConnectActivity extends AppCompatActivity {
     public void onConnectClick(View v) {
         final String ip=((EditText) findViewById(R.id.textfield_ipaddress)).getText().toString();
         final int port= Integer.valueOf(((EditText) findViewById(R.id.textfield_port)).getText().toString());
+        Log.d("ConnectActivity: ", "connecting:" + ip + " " + port);
+        con = new ConnectionThread(ip,port,this);
+        con.start(); //start the thread
+        con.prepareHandler(); //prepare Handler
+        conHandler=con.getHandler(); //get the handler
+        Message msg = conHandler.obtainMessage(); //get a message
+        msg.what = 1; //set message code to 1
+        msg.sendToTarget(); // send message to conHandler
 
-        con=new ConnectionThread(new NetAddress(ip,port));
-        conHandler=con.getHandler();
 
 
         /*

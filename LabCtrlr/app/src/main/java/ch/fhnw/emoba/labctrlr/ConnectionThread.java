@@ -1,16 +1,21 @@
 package ch.fhnw.emoba.labctrlr;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
 
 import netP5.NetAddress;
+import netP5.NetInfo;
+import oscP5.OscMessage;
 import oscP5.OscP5;
+import oscP5.OscPacket;
 import oscP5.OscProperties;
 
 /**
@@ -18,47 +23,79 @@ import oscP5.OscProperties;
  */
 public class ConnectionThread extends HandlerThread {
     private OscP5 oscP5;
-    private NetAddress address;
+    private String ip;
+    private int port;
+    private Thread connection;
+    private Activity caller;
+    private Position pos = new Position(5,7);
 
     private Handler handler;
 
+    ConnectionThread(String name){
+        super(name);
+    }
 
-
-
-
-    ConnectionThread(NetAddress address) {
+    ConnectionThread(String ip, int port, Activity caller) {
         super("ConnectionThread");
-        this.handler= new Handler() {
+        this.ip = ip;
+        this.port = port;
+        this.caller = caller;
+    }
+
+    public void prepareHandler(){
+        this.handler = new Handler(getLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                Message m=new Message();
-                //msg.getData().getBinder("")
-
+                if(msg.what == 1){
+                    Log.d("ConnectionThread", "msg.what == 1 called");
+                    if(connection == null) {
+                        connection = new Connector();
+                    }
+                    connection.run();
+                }
             }
         };
-
-        this.address=address;
-
     }
+
+    public String toString(){ //to avoid exception...
+        return "ConnectionThread";
+    }
+
     public Handler getHandler(){
         return this.handler;
     }
 
-    @Override
-    public void run() {
-        super.run();
+    public class Connector extends Thread{
+        @Override
+        public void run(){
+            //        super.run();
+            OscProperties oscProperties = new OscProperties();
+            long start = System.currentTimeMillis();
 
-        OscProperties oscProperties = new OscProperties();
-        long start = System.currentTimeMillis();
+            oscProperties.setNetworkProtocol(OscProperties.TCP);
+            oscProperties.setRemoteAddress(new NetAddress(ip, port));
+            oscP5 = new OscP5(this, oscProperties);
+            NetInfo tmp = oscP5.netInfo();
 
-        oscProperties.setNetworkProtocol(OscProperties.TCP);
-        oscProperties.setRemoteAddress(address);
-        oscP5 = new OscP5(this, oscProperties);
+            Log.d("ConnectionThread: ", "wan: "+ tmp.wan() + " lan: " + tmp.lan());
+            while(true) {
+                sendCoordinates(pos.getX(), pos.getY());
+                Log.d("ConnectionThread: ", "sending pos: " + pos.getX() + " / " + pos.getY());
+            }
+            //System.out.println(oscProperties);
+            //System.out.println(oscP5);
+           // System.out.println(System.currentTimeMillis() - start);
+            //while
+        }
 
-        //System.out.println(oscProperties);
-        //System.out.println(oscP5);
-        System.out.println(System.currentTimeMillis() - start);
-
-        while
+        public void sendCoordinates(int x, int y){
+            OscMessage OscMsg = new OscMessage("lab");
+            OscMsg.add(0);
+            OscMsg.add(x);
+            OscMsg.add(1);
+            OscMsg.add(y);
+            Log.d("Connector", "Message sent");
+            oscP5.send(OscMsg);
+        }
     }
 }
