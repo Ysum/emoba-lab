@@ -27,13 +27,13 @@ public class SensorActivity extends Activity
 
     public SensorActivity() {
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
     }
 
     protected void onCreate(Bundle savedInstanceState) {
         //TODO hide Titlebar
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sensor);
+        //setContentView(R.layout.activity_sensor);
 
 
         SharedPreferences settings = getSharedPreferences("lastConnection", 0);
@@ -66,6 +66,7 @@ public class SensorActivity extends Activity
     }
 
     public void onSensorChanged(SensorEvent event) {
+        Log.d("Sensor",event.values[0]+"/"+event.values[1]+"/"+event.values[2]);
 
     }
 
