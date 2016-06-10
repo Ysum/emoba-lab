@@ -1,9 +1,11 @@
 package ch.fhnw.emoba.labctrlr;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,11 +15,10 @@ import android.view.SurfaceView;
  */
 public class TouchControlView extends SurfaceView implements SurfaceHolder.Callback {
     SurfaceHolder surfaceHolder;
-    float width, x;
-    float height, y;
+    float width, x, mid_x;
+    float height, y, mid_y;
 
     RenderThread thread;
-    boolean running = false;
 
     public TouchControlView(Context context) {
         super(context);
@@ -28,27 +29,30 @@ public class TouchControlView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
-        x = event.getX();
-        y = event.getY();
 
-        //map x and y linear from viewsize to 0-180
-        float x_scaled = Math.round(x*180/width);
-        float y_scaled = Math.round(y*180/height);
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            x = event.getX();
+            y = event.getY();
+//        } else
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+            x = mid_x;
+            y = mid_y;
+        }
+//        Log.d("TouchControlView: ", "touched: "+x+"/"+y);
 
-        //TODO send x and y to device
-
-        //print x/y for debugging
-        System.out.println(x_scaled+"/"+y_scaled);
-        return false;
+        return true;
     }
+
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         width =  this.getWidth();
         height = this.getHeight();
 
-        x = width/2;
-        y = height/2;
+        mid_x = width/2;
+        mid_y = height/2;
+        x = mid_x;
+        y = mid_y;
 
         setWillNotDraw(false);
 
@@ -60,10 +64,9 @@ public class TouchControlView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.drawColor(Color.GRAY);
+        drawJoystick(canvas);
 
-        //test background draw
-        canvas.drawColor(Color.GREEN);
-//        drawJoystick(x, y);
     }
 
     @Override
@@ -80,14 +83,28 @@ public class TouchControlView extends SurfaceView implements SurfaceHolder.Callb
         }
     }
 
-    //WIP
-    public void drawJoystick(Canvas canvas, float touch_x, float touch_y) {
+    public void drawJoystick(Canvas canvas) {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        canvas.drawCircle(width/2, height/2, 10, paint);
+        paint.setStrokeWidth(5);
+        canvas.drawCircle(mid_x, mid_y, 20, paint);
+        paint.setStrokeWidth(5);
+        canvas.drawLine(mid_x, mid_y, x, y, paint);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(x, y, 10, paint);
 
     }
 
-    //TODO Neigung der Spielfläche visualisieren
+
+    public void resetJoystick(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(5);
+        canvas.drawCircle(mid_x, mid_y, 20, paint);
+        paint.setStrokeWidth(5);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(mid_x, mid_y, 10, paint);
+
+    }
 
 }

@@ -31,13 +31,11 @@ public class SensorActivity extends Activity
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sensor);
-
+        //setContentView(R.layout.activity_sensor);
 
         SharedPreferences settings = getSharedPreferences("lastConnection", 0);
         String ip=settings.getString("ipAddress", " ");
         int port=settings.getInt("portNumber", 0);
-
 
         Log.d("ConnectActivity: ", "connecting:" + ip + " " + port);
         con = new ConnectionThread(ip,port,this);

@@ -1,5 +1,6 @@
 package ch.fhnw.emoba.labctrlr;
 
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
@@ -20,6 +21,7 @@ public class RenderThread extends Thread{
         this.running = running;
     }
 
+
     @Override
     public void run() {
         Canvas canvas;
@@ -28,6 +30,7 @@ public class RenderThread extends Thread{
             try {
                 canvas = surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
+//                    touchControlView.drawJoystick(canvas);
                     touchControlView.postInvalidate();
 
                 }
