@@ -30,15 +30,13 @@ public class TouchControlView extends SurfaceView implements SurfaceHolder.Callb
     @Override
     public boolean onTouchEvent(MotionEvent event){
 
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            x = event.getX();
-            y = event.getY();
-//        } else
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+        x = event.getX();
+        y = event.getY();
+
+        if (event.getAction() == MotionEvent.ACTION_UP) {
             x = mid_x;
             y = mid_y;
         }
-//        Log.d("TouchControlView: ", "touched: "+x+"/"+y);
 
         return true;
     }
@@ -95,16 +93,5 @@ public class TouchControlView extends SurfaceView implements SurfaceHolder.Callb
 
     }
 
-
-    public void resetJoystick(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(5);
-        canvas.drawCircle(mid_x, mid_y, 20, paint);
-        paint.setStrokeWidth(5);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(mid_x, mid_y, 10, paint);
-
-    }
 
 }
