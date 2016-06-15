@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.util.Log;
 
 /**
@@ -68,7 +69,7 @@ public class SensorActivity extends Activity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //if(co!=null) con.close();
+        //con.close();
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -79,8 +80,10 @@ public class SensorActivity extends Activity
         int y=(int)event.values[2]*2+90;
         int x=(int)event.values[1]*2+90;
         y=y>180?180:(y<0?0:y);
-
         x=x>180?180:(x<0?0:x);
+
+        if(x==0||x==180||y==0||y==180)
+            ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
 
         Message msg = conHandler.obtainMessage();
         msg.what = 2; //set message code to 1$

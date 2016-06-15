@@ -17,11 +17,13 @@ public class TouchControlView extends SurfaceView implements SurfaceHolder.Callb
     SurfaceHolder surfaceHolder;
     float width, x, mid_x;
     float height, y, mid_y;
-
+    MainActivity activity;
     RenderThread thread;
 
     public TouchControlView(Context context) {
         super(context);
+
+        activity=(MainActivity) context;
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
@@ -29,6 +31,8 @@ public class TouchControlView extends SurfaceView implements SurfaceHolder.Callb
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
+        //super.onTouchEvent(event);
+        activity.onTouchEvent(event);
 
         x = event.getX();
         y = event.getY();

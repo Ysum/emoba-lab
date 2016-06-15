@@ -79,6 +79,7 @@ public class MainActivity extends Activity {
 
         msg.sendToTarget(); // send message to conHandler
 
+
         //print x/y for debugging
         System.out.println(x_scaled+"/"+y_scaled);
         return super.onTouchEvent(event);

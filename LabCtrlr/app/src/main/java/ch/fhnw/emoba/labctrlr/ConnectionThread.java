@@ -80,7 +80,8 @@ public class ConnectionThread extends HandlerThread {
     }
 
     public void close(){
-        oscP5.stop();
+
+        oscP5.disconnect(new NetAddress(ip, port));
         System.out.println("disconnected");
     }
 
@@ -102,9 +103,9 @@ public class ConnectionThread extends HandlerThread {
             oscProperties.setNetworkProtocol(OscProperties.TCP);
             oscProperties.setRemoteAddress(new NetAddress(ip, port));
             oscP5 = new OscP5(this, oscProperties);
-            NetInfo tmp = oscP5.netInfo();
+            //NetInfo tmp = oscP5.netInfo();
 
-            Log.d("ConnectionThread: ", "wan: "+ tmp.wan() + " lan: " + tmp.lan());
+            //Log.d("ConnectionThread: ", "wan: "+ tmp.wan() + " lan: " + tmp.lan());
             /*while(true) {
                 sendCoordinates(pos.getX(), pos.getY());
                 Log.d("ConnectionThread: ", "sending pos: " + pos.getX() + " / " + pos.getY());
