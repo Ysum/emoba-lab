@@ -81,7 +81,7 @@ public class ConnectionThread extends HandlerThread {
 
     public void close(){
 
-        oscP5.disconnect(new NetAddress(ip, port));
+
         System.out.println("disconnected");
     }
 

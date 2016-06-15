@@ -81,6 +81,7 @@ public class SensorActivity extends Activity
         int x=(int)event.values[1]*2+90;
         y=y>180?180:(y<0?0:y);
         x=x>180?180:(x<0?0:x);
+        x=180-x;
 
         if(x==0||x==180||y==0||y==180)
             ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
