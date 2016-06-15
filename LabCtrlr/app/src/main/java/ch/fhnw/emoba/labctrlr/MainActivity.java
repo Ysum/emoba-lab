@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        con.close();
+        //con.close();
         super.onDestroy();
     }
 

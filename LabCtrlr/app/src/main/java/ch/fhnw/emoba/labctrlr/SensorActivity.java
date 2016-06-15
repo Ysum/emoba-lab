@@ -68,7 +68,7 @@ public class SensorActivity extends Activity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        con.close();
+        //if(co!=null) con.close();
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
